@@ -1,18 +1,6 @@
 import subprocess
 import sys
-import os
 
-# Tự động cài đặt dependencies nếu thiếu
-def install_package(package):
-    """Cài đặt package nếu chưa có"""
-    try:
-        __import__(package)
-    except ImportError:
-        print(f"Đang cài đặt {package}...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-        print(f"Đã cài đặt {package} thành công!")
-
-# Kiểm tra và cài đặt các package quan trọng
 required_packages = {
     'bs4': 'beautifulsoup4',
     'telebot': 'pytelegrambotapi',
@@ -33,46 +21,58 @@ required_packages = {
     'yt_dlp': 'yt-dlp'
 }
 
-for module_name, package_name in required_packages.items():
+def try_import(module_name: str):
+    """Thử import module, trả về True/False."""
     try:
         if module_name == 'bs4':
-            from bs4 import BeautifulSoup
+            from bs4 import BeautifulSoup  # noqa: F401
         elif module_name == 'Crypto':
-            from Crypto.Cipher import AES
+            from Crypto.Cipher import AES  # noqa: F401
         else:
             __import__(module_name)
+        return True
     except ImportError:
-        print(f"Module {module_name} chưa được cài đặt. Đang cài đặt {package_name}...")
-        installed = False
-        # Thử cài global trước
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name], 
-                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            print(f"Đã cài đặt {package_name} thành công!")
-            installed = True
-        except Exception:
-            # Nếu thất bại, thử cài với --user
-            try:
-                subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", package_name], 
-                                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                print(f"Đã cài đặt {package_name} thành công (user mode)!")
-                installed = True
-            except Exception as e:
-                print(f"Lỗi khi cài đặt {package_name}: {e}")
-                print(f"Vui lòng chạy: {sys.executable} -m pip3 install {package_name}")
-        
-        # Nếu đã cài xong, thử import lại
-        if installed:
-            try:
-                if module_name == 'bs4':
-                    from bs4 import BeautifulSoup
-                elif module_name == 'Crypto':
-                    from Crypto.Cipher import AES
-                else:
-                    __import__(module_name)
-                print(f"Đã xác nhận {module_name} hoạt động!")
-            except ImportError:
-                print(f"CẢNH BÁO: {package_name} đã được cài nhưng vẫn không import được. Có thể cần restart bot.")
+        return False
+
+def install_package(package_name: str):
+    """Cài đặt 1 package bằng pip, trước global, sau đó --user nếu cần."""
+    python = sys.executable  # vd: /usr/bin/python3 trên Ubuntu
+    print(f"→ Đang cài đặt {package_name} ...")
+    
+    # Thử cài global
+    try:
+        subprocess.check_call([python, "-m", "pip", "install", package_name])
+        print(f"✔ Đã cài {package_name} (system-wide)")
+        return True
+    except Exception:
+        pass
+
+    # Nếu fail, thử cài --user
+    try:
+        subprocess.check_call([python, "-m", "pip", "install", "--user", package_name])
+        print(f"✔ Đã cài {package_name} (user mode)")
+        return True
+    except Exception as e:
+        print(f"✖ Lỗi khi cài {package_name}: {e}")
+        print(f"   Thử chạy tay: {python} -m pip install {package_name}")
+        return False
+
+
+def ensure_dependencies():
+    for module_name, package_name in required_packages.items():
+        if try_import(module_name):
+            print(f"✅ {module_name} đã có sẵn.")
+            continue
+
+        print(f"⚠ Module {module_name} chưa có. Đang cài {package_name}...")
+        if install_package(package_name):
+            # Cài xong thử import lại
+            if try_import(module_name):
+                print(f"✅ Đã xác nhận {module_name} hoạt động.")
+            else:
+                print(f"⚠ {package_name} cài xong nhưng vẫn không import được. Có thể cần restart / kiểm tra môi trường.")
+        else:
+            print(f"❌ Không cài được {package_name}. Bỏ qua module này.")
 
 import aiohttp
 import time
@@ -2797,6 +2797,7 @@ def react_to_command(message):
 if __name__ == "__main__":
     bot_active = True
     bot.infinity_polling()
+
 
 
 
