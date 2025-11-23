@@ -59,7 +59,7 @@ for module_name, package_name in required_packages.items():
                 installed = True
             except Exception as e:
                 print(f"Lỗi khi cài đặt {package_name}: {e}")
-                print(f"Vui lòng chạy: {sys.executable} -m pip install {package_name}")
+                print(f"Vui lòng chạy: {sys.executable} -m pip3 install {package_name}")
         
         # Nếu đã cài xong, thử import lại
         if installed:
@@ -2797,5 +2797,6 @@ def react_to_command(message):
 if __name__ == "__main__":
     bot_active = True
     bot.infinity_polling()
+
 
 
