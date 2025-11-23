@@ -50,7 +50,7 @@ global_lock = Lock()
 admin_mode = False
 share_log = []
 BOT_LINK = 'https://t.me/dungboanhbot'
-TOKEN = '8031804112:AAEvuB6jVpEn4EeX31Zwb0TSPSJgBLtQDZE'
+TOKEN = ''
 bot = TeleBot(TOKEN)
 ADMIN_ID = 6836012166 # id admin
 admins = {6836012166}
@@ -2721,6 +2721,7 @@ def react_to_command(message):
 if __name__ == "__main__":
     bot_active = True
     bot.infinity_polling()
+
 
 
 
