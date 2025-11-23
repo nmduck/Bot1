@@ -1031,7 +1031,7 @@ def spam(message):
             temp_file_path = temp_file.name
 
         # Chạy script với tham số sdt và count
-        process = subprocess.Popen(["python", temp_file_path, sdt, str(count)])
+        process = subprocess.Popen(["python3", temp_file_path, sdt, str(count)])
         # Lưu PID để dùng /stop
         active_processes[sdt] = process.pid
     except Exception as e:
@@ -1326,7 +1326,7 @@ def spamvip(message):
             temp_file.write(script_content.encode('utf-8'))
             temp_file_path = temp_file.name
 
-        process = subprocess.Popen(["python", temp_file_path, sdt, str(count)])
+        process = subprocess.Popen(["python3", temp_file_path, sdt, str(count)])
         # Lưu PID và user_id vào active_processes
         active_processes[sdt] = {'pid': process.pid, 'user_id': user_id}
     except FileNotFoundError:
@@ -2721,6 +2721,7 @@ def react_to_command(message):
 if __name__ == "__main__":
     bot_active = True
     bot.infinity_polling()
+
 
 
 
