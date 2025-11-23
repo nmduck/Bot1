@@ -16,6 +16,7 @@ import sqlite3
 import hashlib
 import zipfile
 import telebot
+import tempfile
 from gtts import gTTS
 from io import BytesIO
 from urllib.parse import urljoin, urlparse, urldefrag
@@ -26,20 +27,20 @@ import pytz
 from datetime import datetime, timedelta
 from telebot.types import Message
 
-ALLOWED_GROUP_ID = -1002955081982  # ID BOX
-admin_diggory = "BroLeak"
-name_bot = "Bot Tiện Ích 247"
-zalo = "Đang Cập Nhật"
-web = "buyre247.store"
-facebook = "Đang Cập Nhật"
-allowed_group_id = -1002955081982  # ID BOX
+ALLOWED_GROUP_ID = -1002206366318  # ID BOX
+admin_diggory = "nmdc210"
+name_bot = "Duck"
+zalo = "0965934183"
+web = "https://www.mduc.x10.mx/"
+facebook = "https://www.facebook.com/nmd210"
+allowed_group_id = -1002206366318  # ID BOX
 users_keys = {}
 freeuser = []
 auto_spam_active = False
 last_sms_time = {}
 allowed_users = []
 processes = []
-ADMIN_ID = 6204204362  # ID ADMIN
+ADMIN_ID = 6836012166  # ID ADMIN
 connection = sqlite3.connect('user_data.db')
 cursor = connection.cursor()
 last_command_time = {}
@@ -48,11 +49,11 @@ share_count = {}
 global_lock = Lock()
 admin_mode = False
 share_log = []
-BOT_LINK = 'https://t.me/noside1n_bot'
-TOKEN = '8355828848:AAGGJ6bYauZFOKVhOs7ayi6rdA6bzpzucik'
+BOT_LINK = 'https://t.me/dungboanhbot'
+TOKEN = '8031804112:AAEvuB6jVpEn4EeX31Zwb0TSPSJgBLtQDZE'
 bot = TeleBot(TOKEN)
-ADMIN_ID = 6204204362 # id admin
-admins = {6204204362}
+ADMIN_ID = 6836012166 # id admin
+admins = {6836012166}
 bot_admin_list = {}
 cooldown_dict = {}
 allowed_users = []
@@ -387,7 +388,7 @@ stored_keys = load_keys()  # load khi bot start
 
 def generate_key():
     rand_str = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-    return f"akaiv2-{rand_str}"
+    return f"mduc×thl-{rand_str}"
 
 def check_user_key(user_id):
     try:
@@ -667,7 +668,7 @@ def bancheck_command(message):
         formatted_result = f"""────────────────────
 {result}
 ────────────────────
-🔰 Developer : @BroLeak1"""
+🔰 Developer : @nmdc210"""
         bot.edit_message_text(
             formatted_result,
             processing_msg.chat.id,
@@ -788,11 +789,11 @@ def welcome_new_member(message):
         # Inline buttons
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(
-            types.InlineKeyboardButton("👑 Admin", url="https://t.me/BroLeak1"),
-            types.InlineKeyboardButton("📢 Kênh thông báo", url="https://t.me/aloadangshare")
+            types.InlineKeyboardButton("👑 Admin", url="https://t.me/nmdc210"),
+            types.InlineKeyboardButton("📢 Kênh thông báo", url="https://t.me/thlcte")
         )
         keyboard.add(
-            types.InlineKeyboardButton("💬 Nhóm chat", url="https://t.me/aloadangshare"),
+            types.InlineKeyboardButton("💬 Nhóm chat", url="https://t.me/thlcte"),
         )
 
         # Gửi Welcome kèm video
@@ -860,7 +861,7 @@ def diggory(message):
 <b>{name_bot} - Trung tâm điều khiển</b>
 
 <b>Người dùng:</b> @{username}
-<b>Hệ thống:</b> Bot Tiện Ích 247
+<b>Hệ thống:</b> {name_bot}
 <b>Zalo:</b> {zalo}
 <b>Website:</b> {web}
 <b>Telegram admin:</b> @{admin_diggory}
@@ -933,7 +934,7 @@ def spam(message):
 
     # Tạo keyboard
     keyboard = types.InlineKeyboardMarkup()
-    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/BroLeak1')
+    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/nmdc210')
     keyboard.add(url_button1)
 
     # Lấy tham số từ message
@@ -1080,7 +1081,7 @@ def sms(message):
 
     # Inline keyboard (quảng cáo / buy vip)
     keyboard = types.InlineKeyboardMarkup()
-    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/BroLeak1')
+    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/nmdc210')
     keyboard.add(url_button1)
 
     # Lấy tham số
@@ -1226,7 +1227,7 @@ def stop(message):
 
 
 blacklist = [
-    "112", "113", "114", "115", "116", "117", "118", "119", "0854510316", "1",
+    "112", "113", "114", "115", "116", "117", "118", "119", "1",
     "2", "3", "4"
 ]
 
@@ -1243,7 +1244,7 @@ def spamvip(message):
     auto_react_to_command(message)  # <- Thêm dòng này
 
     if user_id not in allowed_users:
-        bot.reply_to(message, 'Mua Vip Liên Hệ ADMIN @BroLeak1')
+        bot.reply_to(message, 'Mua Vip Liên Hệ ADMIN @nmdc210')
         return
 
     # Xóa tin nhắn của user
@@ -1256,7 +1257,7 @@ def spamvip(message):
     processing_msg = bot.send_message(chat_id, f"⏳ <a href='tg://user?id={user_id}'>{user_name}</a>, đang xử lý SMS...", parse_mode="HTML")
 
     keyboard = types.InlineKeyboardMarkup()
-    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/BroLeak1')
+    url_button1 = types.InlineKeyboardButton("🔥 Buy Vip", url='https://t.me/nmdc210')
     keyboard.add(url_button1)
 
 
@@ -1343,7 +1344,7 @@ def stopvip(message):
     user_id = message.from_user.id
     auto_react_to_command(message)  # <- Thêm dòng này
     if user_id not in allowed_users:
-        bot.reply_to(message, 'Mua Vip Liên Hệ ADMIN @BroLeak1')
+        bot.reply_to(message, 'Mua Vip Liên Hệ ADMIN @nmdc210')
         return
     params = message.text.split()[1:]
     if len(params) != 1:
@@ -1436,7 +1437,7 @@ def check_blacklist(message):
         bot.reply_to(message, "Số điện thoại này đã bị chặn!")
 
 
-ADMIN_NAME = "BroLeak1"
+ADMIN_NAME = "nmdc210"
 
 
 @bot.message_handler(commands=['ad'])
@@ -1446,7 +1447,7 @@ def send_admin_info(message):
                      f"Only One => Is : {ADMIN_NAME}\nID: `{ADMIN_ID}`",
                      parse_mode='Markdown')
 
-ADMIN_NAME = "BroLeak1"
+ADMIN_NAME = "nmdc210"
 
 @bot.message_handler(commands=['id'])
 def get_user_id(message):
@@ -1683,7 +1684,7 @@ def muaplan(message):
     auto_react_to_command(message)  # <- Thêm dòng này
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton("🔥 Buy Vip",
-                                            url='https://t.me/BroLeak1')
+                                            url='https://t.me/nmdc210')
     keyboard.add(url_button)
 
     bot.reply_to(
@@ -1713,7 +1714,7 @@ def hdsd(message):
 ┗━━━━━━━━━━━━━━━━━━━➤\n
 ┏━━━━━━━━━━━━━━━━━━━━┓\n
 ┣➤ Thông Tin Admin\n
-┣➤ Telegram : @BroLeak1\n
+┣➤ Telegram : @nmdc210\n
 ┗━━━━━━━━━━━━━━━━━━━➤ </blockquote>\n""",
                      parse_mode="HTML")
 
@@ -1727,21 +1728,21 @@ def muavip_info(message):
     mua_vip_text = f'''
 <blockquote>
 <b>Thông Tin Thanh Toán</b>
-├ Ngân Hàng : ACB
-├ STK : 22368951
-├ Chủ TK : PHAM VAN KIET
+├ Ngân Hàng : Zalo Pay
+├ STK : 0965934183
+├ Chủ TK : Nguyen Minh Duc
 ├ Nội Dung : <code>muavip_{user_id}</code>
 ├ Số Tiền : 35.000 VND
-├ Gửi bill cho @BroLeak1 để được duyệt
+├ Gửi bill cho @nmdc210 để được duyệt
 ├ LƯU Ý : PHẢI CÓ NỘI DUNG CHUYỂN KHOẢN
-└ 💬 Liên Hệ : @BroLeak1
+└ 💬 Liên Hệ : @nmdc210
 </blockquote>
 '''
 
     # Gửi ảnh kèm caption
     bot.send_photo(
         chat_id=message.chat.id,
-        photo='https://sf-static.upanhlaylink.com/view/image_20251027f649e38178ee3ebdcbf0084598093127.jpg',
+        photo='https://sf-static.upanhlaylink.com/img/image_20251123f1cdf508b18ae97752dbf30b9624315d.jpg',
         caption=mua_vip_text,
         parse_mode='HTML'
     )
@@ -1833,7 +1834,7 @@ def hotmail(message):
         "✅ Tài khoản Hotmail đã tạo thành công!\n\n"
         f"📧 Email: `{email}`\n"
         f"🔑 Mật khẩu: `{password}`\n\n"
-        "Admin @BroLeak1"
+        "Admin @nmdc210"
     )
 
     bot.edit_message_text(chat_id=message.chat.id, message_id=msg.message_id,
@@ -2215,7 +2216,7 @@ def tao_anh(message):
     try:
         text = message.text.replace("/taoanh", "").strip()
         if not text:
-            bot.reply_to(message, "Vui lòng nhập mô tả ảnh.\n Ví dụ: /taoanh BroLeak1")
+            bot.reply_to(message, "Vui lòng nhập mô tả ảnh.\n Ví dụ: /taoanh nmdc210")
             return
 
         # Gửi tin nhắn thông báo
@@ -2552,7 +2553,7 @@ users_file = "users.json"
 login_file = "login.json"
 code_file = "codes.json"
 register_temp = {}
-admin_id = [6204204362]  # Thay bằng Telegram ID admin
+admin_id = [6836012166]  # Thay bằng Telegram ID admin
 
 # --- Hàm tiện ích ---
 def load_json(file):
@@ -2720,3 +2721,4 @@ def react_to_command(message):
 if __name__ == "__main__":
     bot_active = True
     bot.infinity_polling()
+
